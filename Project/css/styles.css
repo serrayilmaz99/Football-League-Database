@@ -1,0 +1,160 @@
+#title{
+  background-color: #f2f4f7;
+  padding-bottom: 0;
+}
+#features{
+  padding: 5% 15%;
+  background-color: white;
+}
+.StandardTable thead{
+  background-color: #111f4d;
+  color: #f2f4f7;
+}
+body{
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+h1,h2,h3,h4{
+  font-family: 'Montserrat-Bolder', sans-serif;
+  line-height: 35px;
+}
+h5{
+  line-height: 40px;
+}
+
+p{
+  color: #655c56;
+  font-family: 'Montserrat-Bolder', sans-serif;
+}
+h1{
+  font-size: 3rem;
+  line-height: 1.5;
+  padding-bottom: 10%;
+  padding-top: 10%;
+  color: #3f3f44;
+}
+h2{
+  font-size: 3rem;
+  line-height: 1.5;
+  color: #655c56;
+}
+h3{
+  margin-bottom: 3%;
+}
+.titlepic{
+  width: 100%;
+  padding-top: 25%;
+}
+.header{
+  width:200px;
+  margin-left: 26%;
+  text-align: left;
+}
+
+.icon{
+  color: #77acf1;
+  margin-bottom: 1rem;
+}
+.icon:hover{
+  color: #04009a;
+}
+.btn{
+  margin-right: 5px;
+}
+.navbar-brand{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  padding-left: 5%;
+}
+.nav-link{
+  font-size: 0.9rem;
+  font-family: 'Montserrat-Light', sans-serif;
+}
+.feature-box{
+  padding:5%;
+}
+.navbar-item{
+  padding: 0 2px;
+}
+
+.btnpro{
+  margin: 5% 0 0 0;
+  background-color: white;
+  color: #4d3e3e;
+  font-family: 'Montserrat-Bolder', sans-serif;
+  border-color: #04009a;
+}
+#pricing{
+  padding: 100px;
+}
+.btnpro:hover{
+  background-color: #04009a;
+  border-color: #04009a;
+  color: white;
+}
+.product-img{
+  width: 100%;
+}
+
+.testimonial-img{
+  width:10%;
+  border-radius: 100%;
+  margin:20px;
+}
+.carousel-item{
+  padding: 5% 15%;
+}
+
+#testimonials{
+  padding: 10% 15% 0;
+  background-color: #f9d5bb;
+  color: #655c56;
+}
+.card-header{
+  background-color: #edffea;
+}
+.pricing-col{
+  padding: 3% 2%;
+}
+.carousel-inner{
+  height: 100%;
+}
+.press-logo{
+  width:15%;
+  margin:20px 20px 50px;
+}
+#press{
+  background-color: #f9d5bb;
+  padding-bottom: 3%;
+}
+#pricing{
+  background-color: #f7f7f7;
+}
+
+#footer, #cta{
+  background-color: #f2f4f7;
+  color: #3f3f44;
+  padding-bottom: 1%;
+  padding-top: 1%;
+}
+
+.container{
+  padding-top: 1rem;
+}
+
+@media (max-width: 1200px){
+  h1{
+    font-size:5rem;
+  }
+  .titlepic{
+    padding-top: 10%;
+  }
+  .nav-link{
+    font-size: 2rem;
+  }
+  .navbar-brand{
+    font-size: 1rem;
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+}
