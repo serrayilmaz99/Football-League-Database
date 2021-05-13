@@ -57,29 +57,131 @@
       <!-- Title -->
 
       <div class="row">
-        <div class="col-lg-1">
+        <div class="col-lg-2">
 
         </div>
-        <div class="col-lg-3 buttons">
+        <div class="col-lg-4 buttons">
           <br><br><br><br>
-            <form action="index.php"  method="POST" >
+            <form  method="POST" >
               <input type="text" class="form-control" id="teamID" name="teamID" placeholder="Team ID" required><br>
               <input type="text" class="form-control" id="teamName" name="teamName" placeholder="Team Name" required><br>
               <input type="text" class="form-control" id="teamCity" name="teamCity" placeholder="Team City" required><br>
-              <input type="text" class="form-control" id="available" name="available" placeholder="Available" required><br>
-              <button class="btn btn-outline-secondary btn-md">Insert</button>
+              <input type="text" class="form-control" id="active" name="active" placeholder="Active" required><br>
+              <button class="btn btn-outline-secondary btn-md" name = "insert" >Insert</button>
             </form>
+        </div> 
+
+        <div class="col-lg-1">
         </div>
+
         <div class="col-lg-3">
+          <br><br><br><br>
+        <form action="" method="post">
+          <input type="text" class="form-control" id ="teamID" name ="teamID" placeholder ="teamID" required><br>
+          <button class="btn btn-outline-secondary btn-md" name="select">Select</button>
+          <!--<button type="submit" value="select "></button>-->
+        </form>
 
         </div>
-        <div class="col-lg-5">
+       
 
-        </div>
+
+
       </div>
     </div>
   </section>
 
+
+  <?php
+
+  // database connection code
+  // $con = mysqli_connect('localhost', 'database_user', 'database_password','database');
+  
+  include "config.php";
+
+  //(isset($_POST['teamID']))
+  if (isset($_POST['insert'])) { // If the id post variable is set
+  
+      $teamID = $_POST['teamID'];
+  		$teamName = $_POST['teamName'];
+  		$teamCity = $_POST['teamCity'];
+  		$active = $_POST['active'];
+  		
+
+  // database insert SQL code
+  $sql_statement = "INSERT INTO `team` (teamID, active, teamName, teamCity )
+   									VALUES ($teamID, $active ,'$teamName', '$teamCity' )";
+
+  // insert in database
+  if ($db->query($sql_statement) === TRUE) {
+    ?>
+    <body style="background-color:#f2f4f7;">
+     <?php echo "Inserted Successfully!"; ?>
+     <?php
+  } else {
+    ?>
+    <body style="background-color:#f2f4f7;">
+      <br>
+     <?php echo "Error: ". $db->error; ?>
+     <?php
+  }
+  }
+  
+  else if (isset($_POST['select'])) { // If the id post variable is set
+  	//  echo "inside if";
+  	$teamID = $_POST['teamID'];
+    $sql_statement = "SELECT * FROM `team`
+                      WHERE teamID = $teamID";
+
+    $result = mysqli_query($db, $sql_statement);
+
+  if (mysqli_num_rows($result) > 0) {
+    // output data of each row which can be 1 or 0 if only teamID(primary key) can be used
+      $row = mysqli_fetch_assoc($result);
+
+  ?>
+
+  <body style="background-color:#f2f4f7;">
+    <div class="row justify-content-md-center">
+
+      <div class="col-md-6 ">
+        <br><br>
+       <table class=" StandardTable table table-bordered">
+         <thead>
+           <tr style="text-align:center">
+             <th scope="col">team ID</th>
+             <th scope="col">Team Name</th>
+             <th scope="col">Team City</th>
+             <th scope="col">Active</th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr style="text-align:center">
+             <td><?php echo $row['teamID'];?></td>
+             <td><?php echo $row['teamName'];?></td>
+             <td><?php echo $row['teamCity'];?></td>
+             <td><?php echo $row['active'];?></td>
+           </tr>
+
+         </tbody>
+       </table>
+      </div>
+
+    </div>
+  </body>
+
+  <?php
+}
+ else {
+   ?>
+   <body style="background-color:#f2f4f7;">
+    <?php echo "No Results!"; ?>
+    <?php
+  }
+
+}
+
+?>
 
 
   <!-- Footer -->

@@ -57,12 +57,12 @@
       <!-- Title -->
 
       <div class="row">
-        <div class="col-lg-1">
+        <div class="col-lg-2">
 
         </div>
-        <div class="col-lg-3 buttons">
+        <div class="col-lg-4 buttons">
           <br><br><br><br>
-            <form action="index.php"  method="POST" >
+            <form method="POST" >
               <input type="text" class="form-control" id="playerID" name="playerID" placeholder="Player ID" required><br>
               <input type="text" class="form-control" id="teamID" name="teamID" placeholder="Team ID" required><br>
               <input type="text" class="form-control" id="name" name="name" placeholder="Name" required><br>
@@ -70,11 +70,24 @@
               <input type="text" class="form-control" id="birthday" name="birthday" placeholder="Birthday" required><br>
               <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Nationality" required><br>
               <input type="text" class="form-control" id="birthplace" name="birthplace" placeholder="Birthplace" required><br>
-              <button class="btn btn-outline-secondary btn-md">Insert</button>
+              <button class="btn btn-outline-secondary btn-md" name="insert">Insert</button>
             </form>
         </div>
-        <div class="col-lg-3">
+         
+        <div class="col-lg-1">
+        </div>
 
+        <div class="col-lg-3">
+        <br><br><br><br>
+          <form method="POST">
+            <input type="text" class="form-control" id="playerID" name="playerID" placeholder="Player ID" required><br>
+            <button class="btn btn-outline-secondary btn-md" name="delete">Delete</button>
+          </form>
+          <br><br><br>
+          <form method="POST">
+            <input type="text" class="form-control" id="playerID" name="playerID" placeholder="Player ID" required><br>
+            <button class="btn btn-outline-secondary btn-md" name="select">Select</button>
+          </form>
         </div>
         <div class="col-lg-5">
 
@@ -83,6 +96,125 @@
     </div>
   </section>
 
+
+  <?php
+  // database connection code
+  // $con = mysqli_connect('localhost', 'database_user', 'database_password','database');
+  
+  include "config.php";
+
+  //(isset($_POST['teamID']))
+  if (isset($_POST['insert'])) { // If the id post variable is set
+  	//  echo "inside if";
+      $playerID = $_POST['playerID'];
+  		$teamID = $_POST['teamID'];
+  		$name = $_POST['name'];
+  		$surname = $_POST['surname'];
+      $birthday = $_POST['birthday'];
+      $birthplace = $_POST['birthplace'];
+  		$nationality = $_POST['nationality'];
+
+  // database insert SQL code
+  $sql_statement = "INSERT INTO `player` (playerID, name, surname, birthday, teamID, nationality, birthplace)
+   									VALUES ($playerID,'$name','$surname', '$birthday' , $teamID, '$nationality', '$birthplace' )";
+
+  // insert in database
+  if ($db->query($sql_statement) === TRUE) {
+    ?>
+    <body style="background-color:#f2f4f7;">
+     <?php echo "Inserted Successfully!"; ?>
+     <?php
+  } else {
+    ?>
+    <body style="background-color:#f2f4f7;">
+      <br>
+     <?php echo "Error: ". $db->error; ?>
+     <?php
+  }
+  }
+
+  else if (isset($_POST['delete'])) { // If the id post variable is set
+  	//  echo "inside if";
+  		$playerID = $_POST['playerID'];
+
+  // database insert SQL code
+  $sql_statement = "DELETE FROM `player`
+                    WHERE playerID = $playerID";
+
+  // insert in database
+
+  	if ($db->query($sql_statement) === TRUE) {
+      ?>
+      <body style="background-color:#f2f4f7;">
+       <?php
+      echo "Affected Rows: " . $db->affected_rows;
+  	} else {
+
+  	  echo "Error: " . $sql_statement . "<br>" . $db->error;
+  	}
+  }
+
+  else if (isset($_POST['select'])) { // If the id post variable is set
+  	//  echo "inside if";
+  	$playerID = $_POST['playerID'];
+    $sql_statement = "SELECT * FROM `player`
+                      WHERE playerID = $playerID";
+
+    $result = mysqli_query($db, $sql_statement);
+
+  if (mysqli_num_rows($result) > 0) {
+    // output data of each row
+      $row = mysqli_fetch_assoc($result);
+
+  ?>
+
+  <body style="background-color:#f2f4f7;">
+    <div class="row justify-content-md-center">
+
+      <div class="col-md-6 ">
+        <br><br>
+       <table class=" StandardTable table table-bordered">
+         <thead>
+           <tr style="text-align:center">
+             <th scope="col">Player ID</th>
+             <th scope="col">Team ID</th>
+             <th scope="col">Name</th>
+             <th scope="col">Surname</th>
+             <th scope="col">Birthday</th>
+             <th scope="col">Nationality</th>
+             <th scope="col">Birthplace</th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr style="text-align:center">
+             <td><?php echo $row['playerID'];?></td>
+             <td><?php echo $row['teamID'];?></td>
+             <td><?php echo $row['name'];?></td>
+             <td><?php echo $row['surname'];?></td>
+             <td><?php echo $row['birthday'];?></td>
+             <td><?php echo $row['nationality'];?></td>
+             <td><?php echo $row['birthplace']?></td>
+           </tr>
+
+         </tbody>
+       </table>
+      </div>
+
+    </div>
+  </body>
+
+  <?php
+}
+ else {
+   ?>
+   <body style="background-color:#f2f4f7;">
+    <?php echo "No Results!"; ?>
+    <?php
+  }
+
+}
+
+?>
 
 
   <!-- Footer -->
