@@ -67,26 +67,23 @@
               <input type="text" class="form-control" id="teamName" name="teamName" placeholder="Team Name" required><br>
               <input type="text" class="form-control" id="teamCity" name="teamCity" placeholder="Team City" required><br>
               <input type="text" class="form-control" id="active" name="active" placeholder="Active" required><br>
-              <button class="btn btn-outline-secondary btn-md" name = "insert" >Insert</button>
+              <button class="btn btn-outline-secondary btn-md" name = "insert">Insert</button>
             </form>
-        </div> 
-
-        <div class="col-lg-1">
         </div>
-
-        <div class="col-lg-3">
+        <div class="col-lg-1 buttons">
+        </div>
+        <div class="col-lg-3 buttons">
           <br><br><br><br>
-        <form action="" method="post">
-          <input type="text" class="form-control" id ="teamID" name ="teamID" placeholder ="teamID" required><br>
-          <button class="btn btn-outline-secondary btn-md" name="select">Select</button>
-          <!--<button type="submit" value="select "></button>-->
-        </form>
-
+            <form   method="POST" >
+              <input type="text" class="form-control" id="teamID" name="teamID" placeholder="Team ID" required><br>
+              <button class="btn btn-outline-secondary btn-md" name="delete">Delete</button>
+            </form>
+            <br><br><br>
+              <form  method="POST" >
+                <input type="text" class="form-control" id="teamID" name="teamID" placeholder="Team ID" required><br>
+                <button class="btn btn-outline-secondary btn-md" name="select">Select</button>
+              </form>
         </div>
-       
-
-
-
       </div>
     </div>
   </section>
@@ -96,17 +93,17 @@
 
   // database connection code
   // $con = mysqli_connect('localhost', 'database_user', 'database_password','database');
-  
+
   include "config.php";
 
   //(isset($_POST['teamID']))
   if (isset($_POST['insert'])) { // If the id post variable is set
-  
+
       $teamID = $_POST['teamID'];
   		$teamName = $_POST['teamName'];
   		$teamCity = $_POST['teamCity'];
   		$active = $_POST['active'];
-  		
+
 
   // database insert SQL code
   $sql_statement = "INSERT INTO `team` (teamID, active, teamName, teamCity )
@@ -126,7 +123,29 @@
      <?php
   }
   }
-  
+
+  else if (isset($_POST['delete'])) { // If the id post variable is set
+    //  echo "inside if";
+      $playerID = $_POST['playerID'];
+
+  // database insert SQL code
+  $sql_statement = "DELETE FROM `player`
+                    WHERE playerID = $playerID";
+
+  // insert in database
+
+    if ($db->query($sql_statement) === TRUE) {
+      ?>
+      <body style="background-color:#f2f4f7;">
+       <?php
+      echo "Affected Rows: " . $db->affected_rows;
+    } else {
+
+      echo "Error: " . $sql_statement . "<br>" . $db->error;
+    }
+  }
+
+
   else if (isset($_POST['select'])) { // If the id post variable is set
   	//  echo "inside if";
   	$teamID = $_POST['teamID'];
