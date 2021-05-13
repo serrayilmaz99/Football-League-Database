@@ -73,7 +73,7 @@
               <button class="btn btn-outline-secondary btn-md" name="insert">Insert</button>
             </form>
         </div>
-         
+
         <div class="col-lg-1">
         </div>
 
@@ -100,7 +100,7 @@
   <?php
   // database connection code
   // $con = mysqli_connect('localhost', 'database_user', 'database_password','database');
-  
+
   include "config.php";
 
   //(isset($_POST['teamID']))
@@ -228,3 +228,4 @@
 </body>
 
 </html>
+
