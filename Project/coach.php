@@ -151,110 +151,111 @@
   	  echo "Error: " . $sql_statement . "<br>" . $db->error;
   	}
   }
- if (isset($_POST['select'])) { // If the id post variable is set
-  	//  echo "inside if";
-   
-    $fields = array("teamID","coachID","name","surname","nationality");
-    $number_of_fields_filled = 0;
+   else if (isset($_POST['select']))   { // If the id post variable is set
+    	//  if none are filled then show error message
+      $fields = array("teamID","coachID","name","surname", "nationality");
+      $number_of_fields_filled = 0;
 
-    foreach($fields as $field){
-      if( ( isset($_POST[$field]) ) && ( strlen($_POST[$field]) != 0) ){
-        $number_of_fields_filled += 1;
-      }
-    }
-    if ($number_of_fields_filled == 0){      
-      ?>
-      <body style="background-color:#f2f4f7;">
-        <br>
-       <?php echo 'At least 1 field must be filled for the query'; ?>
-       <?php
-    }
-    else{
-
-    $number_of_and_clauses = $number_of_fields_filled - 1;
-    $sql_statement = "SELECT * FROM `coach`";
-    foreach ($fields as $field){
-      if( ( isset($_POST[$field]) ) && ( strlen($_POST[$field]) != 0) ){
-
-        $current_field = $_POST[$field];
-        if (is_numeric($current_field) == FALSE){ // if it is not numeric then add quotations to the variable
-          $current_field = '"'. $current_field . '"' ; // this is for sql syntax
-        }
-        $sql_statement .= "$field = $current_field";
-        if($number_of_and_clauses >0)
-        {
-          $sql_statement .= " AND ";
-          $number_of_and_clauses -=1;
+      foreach ($fields as $field){
+        if (isset($_POST[$field]) && strlen($_POST[$field]) != 0  ){
+          $number_of_fields_filled += 1;
         }
       }
+      if($number_of_fields_filled == 0){
+        ?>
+        <body style="background-color:#f2f4f7;">
+          <br>
+         <?php echo 'At least 1 field must be filled for the query'; ?>
+         <?php
+      }
+      else{
+      $number_of_and_clauses = $number_of_fields_filled -1;
+      $sql_statement = "SELECT * FROM `coach` WHERE ";
+      foreach ($fields as $field){
+        if (isset($_POST[$field]) && strlen($_POST[$field]) != 0  ){
+
+          $current_field = $_POST[$field];
+          if (is_numeric($current_field) == FALSE){ // if it is not numeric then add quotations to the variable
+            $current_field = '"'. $current_field . '"' ; // this is for sql syntax
+          }
+
+          $sql_statement .= "$field = $current_field";
+          if($number_of_and_clauses >0)
+          {
+            $sql_statement .= " AND ";
+            $number_of_and_clauses -=1;
+          }
+        }
+      }
+      //echo $sql_statement;
+
+      $result = mysqli_query($db, $sql_statement);
+
+    if (mysqli_num_rows($result) > 0) {
+      // output data of each row which can be 1 or 0 if only teamID(primary key) can be used
+
+
+    ?>
+
+    <body style="background-color:#f2f4f7;">
+      <div class="row justify-content-md-center">
+        <div class="col-md-6 ">
+        <br><br>
+         <table class=" StandardTable table table-bordered">
+
+           <thead>
+             <tr style="text-align:center">
+               <th scope="col">Coach ID</th>
+               <th scope="col">Team ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Surname</th>
+               <th scope="col">Nationality</th>
+             </tr>
+           </thead>
+           <tbody>
+           <?php
+          while ($row = mysqli_fetch_assoc($result)){
+            ?>
+             <tr style="text-align:center">
+               <td><?php echo $row['coachID'];?></td>
+               <td><?php echo $row['teamID'];?></td>
+               <td><?php echo $row['name'];?></td>
+               <td><?php echo $row['surname'];?></td>
+               <td><?php echo $row['nationality'];?></td>
+             </tr>
+             <?php
+             }
+             ?>
+           </tbody>
+         </table>
+        </div>
+
+      </div>
+    </body>
+    <?php
+
+  }
+   else{
+     ?>
+     <body style="background-color:#f2f4f7;">
+      <?php echo "No Results!"; ?>
+      <?php
     }
 
-    $result = mysqli_query($db, $sql_statement);
-
-  if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-      while ($row = mysqli_fetch_assoc($result))
+  }
+  }
 
   ?>
 
-  <body style="background-color:#f2f4f7;">
-    <div class="row justify-content-md-center">
 
-      <div class="col-md-6 ">
-        <br><br>
-       <table class=" StandardTable table table-bordered">
-         <thead>
-           <tr style="text-align:center">
-             <th scope="col">Coach ID</th>
-             <th scope="col">Team ID</th>
-             <th scope="col">Name</th>
-             <th scope="col">Surname</th>
-             <th scope="col">Nationality</th>
-           </tr>
-         </thead>
-         <tbody>
-         <?php
-         while ($row = mysqli_fetch_assoc($result)){
-           ?>
-           <tr style="text-align:center">
-             <td><?php echo $row['coachID'];?></td>
-             <td><?php echo $row['teamID'];?></td>
-             <td><?php echo $row['name'];?></td>
-             <td><?php echo $row['surname'];?></td>
-             <td><?php echo $row['nationality'];?></td>
-           </tr>
-           <?php
-            }
-           ?>
-         </tbody>
-       </table>
-      </div>
+    <!-- Footer -->
 
-    </div>
+    <footer id="footer">
+
+      <p></p>
+
+    </footer>
+
   </body>
 
-  <?php
-}
- else {
-   ?>
-   <body style="background-color:#f2f4f7;">
-    <?php echo "No Results!"; ?>
-    <?php
-  }
-
-}
-}
-
-?>
-
-  <!-- Footer -->
-
-  <footer id="footer">
-
-    <p></p>
-
-  </footer>
-
-</body>
-
-</html>
+  </html>
