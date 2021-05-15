@@ -67,7 +67,7 @@
               <input type="text" class="form-control" id="teamName" name="teamName" placeholder="Team Name" required><br>
               <input type="text" class="form-control" id="teamCity" name="teamCity" placeholder="Team City" required><br>
               <input type="text" class="form-control" id="active" name="active" placeholder="Active" required><br>
-              <button class="btn btn-outline-secondary btn-md" name = "insert" >Insert</button>
+              <button class="btn btn-outline-secondary btn-md" name ="insert" >Insert</button>
             </form>
         </div> 
 
