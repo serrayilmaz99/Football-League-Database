@@ -57,8 +57,7 @@
       <!-- Title -->
 
       <div class="row">
-        <div class="col-lg-2">
-
+        <div class="col-lg-0">
         </div>
         <div class="col-lg-4 buttons">
           <br><br><br><br>
@@ -73,25 +72,36 @@
               <button class="btn btn-outline-secondary btn-md" name="insert">Insert</button>
             </form>
         </div>
-
+         
         <div class="col-lg-1">
         </div>
 
         <div class="col-lg-3">
-        <br><br><br><br>
+          
+          <br><br><br><br>
           <form method="POST">
-            <input type="text" class="form-control" id="playerID" name="playerID" placeholder="Player ID" required><br>
-            <button class="btn btn-outline-secondary btn-md" name="delete">Delete</button>
-          </form>
-          <br><br><br>
-          <form method="POST">
-            <input type="text" class="form-control" id="playerID" name="playerID" placeholder="Player ID" required><br>
+              <input type="text" class="form-control" id="playerID" name="playerID" placeholder="Player ID"><br>
+              <input type="text" class="form-control" id="teamID" name="teamID" placeholder="Team ID"><br>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Name"><br>
+              <input type="text" class="form-control" id="surname" name="surname" placeholder="Surname"><br>
+              <input type="text" class="form-control" id="birthday" name="birthday" placeholder="Birthday"><br>
+              <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Nationality" ><br>
+              <input type="text" class="form-control" id="birthplace" name="birthplace" placeholder="Birthplace"><br>
             <button class="btn btn-outline-secondary btn-md" name="select">Select</button>
           </form>
         </div>
-        <div class="col-lg-5">
 
+        <div class="col-lg-1">
         </div>
+        <div class="col-lg-3">
+
+            <br><br><br><br>
+            <form method="POST">
+              <input type="text" class="form-control" id="playerID" name="playerID" placeholder="Player ID" required><br>
+              <button class="btn btn-outline-secondary btn-md" name="delete">Delete</button>
+            </form>
+        </div>
+
       </div>
     </div>
   </section>
@@ -100,7 +110,7 @@
   <?php
   // database connection code
   // $con = mysqli_connect('localhost', 'database_user', 'database_password','database');
-
+  
   include "config.php";
 
   //(isset($_POST['teamID']))
@@ -147,7 +157,7 @@
       ?>
       <body style="background-color:#f2f4f7;">
        <?php
-      echo "Number of Deleted Rows: " . $db->affected_rows;
+      echo "Affected Rows: " . $db->affected_rows;
   	} else {
 
   	  echo "Error: " . $sql_statement . "<br>" . $db->error;
@@ -155,16 +165,47 @@
   }
 
   else if (isset($_POST['select'])) { // If the id post variable is set
-  	//  echo "inside if";
-  	$playerID = $_POST['playerID'];
-    $sql_statement = "SELECT * FROM `player`
-                      WHERE playerID = $playerID";
+  	
+    $fields = array("playerID","teamID","name","surname","birthday","birthplace","nationality");
+    $number_of_fields_filled = 0;
+
+    foreach($fields as $field){
+      if( ( isset($_POST[$field]) ) && ( strlen($_POST[$field]) != 0) ){
+        $number_of_fields_filled += 1;
+      }
+    }
+
+    if ($number_of_fields_filled == 0){      
+      ?>
+      <body style="background-color:#f2f4f7;">
+        <br>
+       <?php echo 'At least 1 field must be filled for the query'; ?>
+       <?php
+    }
+    else{
+    $number_of_and_clauses = $number_of_fields_filled - 1;
+    $sql_statement = "SELECT * FROM `player` WHERE ";
+    foreach ($fields as $field){
+      if( ( isset($_POST[$field]) ) && ( strlen($_POST[$field]) != 0) ){
+
+        $current_field = $_POST[$field];
+        if (is_numeric($current_field) == FALSE){ // if it is not numeric then add quotations to the variable
+          $current_field = '"'. $current_field . '"' ; // this is for sql syntax
+        }
+        $sql_statement .= "$field = $current_field";
+        if($number_of_and_clauses >0)
+        {
+          $sql_statement .= " AND ";
+          $number_of_and_clauses -=1;
+        }
+      }
+    }
 
     $result = mysqli_query($db, $sql_statement);
 
   if (mysqli_num_rows($result) > 0) {
     // output data of each row
-      $row = mysqli_fetch_assoc($result);
+      
 
   ?>
 
@@ -186,6 +227,9 @@
            </tr>
          </thead>
          <tbody>
+         <?php
+           while ($row = mysqli_fetch_assoc($result)){
+             ?>
            <tr style="text-align:center">
              <td><?php echo $row['playerID'];?></td>
              <td><?php echo $row['teamID'];?></td>
@@ -195,7 +239,9 @@
              <td><?php echo $row['nationality'];?></td>
              <td><?php echo $row['birthplace']?></td>
            </tr>
-
+          <?php
+           }
+           ?>
          </tbody>
        </table>
       </div>
@@ -211,9 +257,8 @@
     <?php echo "No Results!"; ?>
     <?php
   }
-
 }
-
+  }
 ?>
 
 
