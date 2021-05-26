@@ -63,7 +63,7 @@
         <div class="col-lg-5 buttons">
           <br><br><br><br><br><br><br><br><br>
             <h4>Welcome to Football League Database!</h4> <br>
-            <h5>You can insert into, delete and select from database by clicking the table name in the navigation bar!</h5>
+            <h5>You can insert into, delete, select from and update the database by clicking the table name in the navigation bar!</h5>
         </div>
         <div class="col-lg-1">
 
